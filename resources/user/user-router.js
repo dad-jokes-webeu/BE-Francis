@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
-const { findById, deleteUser, updateUser } = require("./users-model");
+const { findById, deleteUser, updateUser } = require("./user-model");
 
 router.get("/me", async (req, res) => {
   const { decodedJwt } = req;
