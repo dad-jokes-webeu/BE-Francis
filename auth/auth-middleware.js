@@ -49,8 +49,6 @@ function generateToken(user) {
   const options = {
     expiresIn: "2d"
   };
-
-  // extract the secret away so it can be required and used where needed
   return jwt.sign(payload, secrets.jwtSecret, options); // this method is synchronous
 }
 
