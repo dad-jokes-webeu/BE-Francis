@@ -5,17 +5,17 @@ const { generateToken, restricted } = require("./auth-middleware");
 const add = require("./auth-model");
 
 router.post("/register", async (req, res) => {
-  let { email, password, name } = req.body;
-  if (!email || !password || !name) {
+  let { email, password, username } = req.body;
+  if (!email || !password || !username) {
     return res.status(400).json({
-      error: "`email`, `name` and `password` are required!"
+      error: "`email`, `username` and `password` are required!"
     });
   }
   try {
     const hash = bcrypt.hashSync(password, 10);
     const [id] = await add("users").insert({
       email,
-      name,
+      username,
       password: hash
     });
     const [user] = await db("users").where({ id });

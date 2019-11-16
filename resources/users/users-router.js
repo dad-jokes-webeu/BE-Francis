@@ -23,7 +23,7 @@ router.put("/me", async (req, res) => {
     return res.status(400).json({
       error:
         "Invalid request body! Must provide at least one of the " +
-        "following: `name`, `username`, and/or `password`"
+        "following: `email`, `username`, and/or `password`"
     });
   }
   if (updates.password) {
