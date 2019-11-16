@@ -8,6 +8,7 @@ exports.up = function(knex) {
         .unique();
       table.string("password", 128).notNullable();
       table.string("name", 128);
+      table.string("jwt", 512);
     })
     .createTable("jokes", table => {
       table.increments();

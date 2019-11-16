@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const secrets = require("../config/secrets");
-const db = require("../database/config");
+const db = require("../database/dbConfig");
 
 async function restricted(req, res, next) {
   const token = req.headers.authorization;
