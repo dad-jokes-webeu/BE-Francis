@@ -2,7 +2,6 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const db = require("../database/dbConfig");
 const { generateToken, restricted } = require("./auth-middleware");
-const add = require("./auth-model");
 
 router.post("/register", async (req, res) => {
   let { email, password, username } = req.body;
@@ -13,7 +12,7 @@ router.post("/register", async (req, res) => {
   }
   try {
     const hash = bcrypt.hashSync(password, 10);
-    const [id] = await add("users").insert({
+    const [id] = await db("users").insert({
       email,
       username,
       password: hash
