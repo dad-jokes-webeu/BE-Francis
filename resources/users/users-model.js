@@ -5,14 +5,6 @@ async function add(user) {
   return findById(ids[0]);
 }
 
-function find() {
-  return db("users").select("id", "username", "name");
-}
-
-function findBy(filter) {
-  return db("users").where(filter);
-}
-
 function findById(id) {
   return db("users")
     .select("id", "username", "name")
@@ -20,9 +12,23 @@ function findById(id) {
     .first();
 }
 
+async function updateUser(id, updates) {
+  await db("users")
+    .where({ id: id })
+    .update(updates);
+  const user = await findById(id);
+  return user;
+}
+
+async function deleteUser(id) {
+  await db("users")
+    .where({ id: id })
+    .delete();
+}
+
 module.exports = {
   add,
-  find,
   findById,
-  findBy
+  deleteUser,
+  updateUser
 };
