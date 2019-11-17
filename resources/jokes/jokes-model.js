@@ -14,12 +14,15 @@ const convertPublicIntsToBooleans = jokes => {
   return jokes;
 };
 
-const findJokes = async (userId, options = { filter: {} }) => {
-  const jokes = await db("jokes").where({
-    user_id: userId,
-    public: 1,
-    ...options.filter
-  });
+const findUserJokes = async userId => {
+  const jokes = await db("jokes").where({ user_id: userId });
+  return convertPublicIntsToBooleans(jokes);
+};
+
+const findJokes = async userId => {
+  const jokes = await db("jokes")
+    .where({ user_id: userId })
+    .orWhere({ public: 1 });
   return convertPublicIntsToBooleans(jokes);
 };
 
@@ -52,9 +55,12 @@ const deleteJoke = async (userId, jokeId) => {
 };
 
 module.exports = {
+  findUserJokes,
   findJokes,
   findJokeById,
   addJoke,
   updateJoke,
   deleteJoke
 };
+
+//

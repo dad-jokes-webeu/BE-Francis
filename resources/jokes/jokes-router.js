@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const {
   findJokes,
+  findUserJokes,
   findJokeById,
   addJoke,
   updateJoke,
@@ -12,6 +13,19 @@ router.get("/", async (req, res) => {
   const userId = decodedJwt.subject;
   try {
     const jokes = await findJokes(userId);
+    res.status(200).json(jokes);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
+router.get("/me", async (req, res) => {
+  const { decodedJwt } = req;
+  const userId = decodedJwt.subject;
+  try {
+    const jokes = await findUserJokes(userId);
     res.status(200).json(jokes);
   } catch (error) {
     res.status(500).json({

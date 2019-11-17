@@ -28,6 +28,7 @@ async function restricted(req, res, next) {
               });
           }
         } else {
+          //The token is a good token!
           req.decodedJwt = decodedToken;
           next();
         }
@@ -43,12 +44,15 @@ async function restricted(req, res, next) {
 function generateToken(user) {
   const payload = {
     subject: user.id,
-    username: user.username
+    email: user.email,
+    name: user.username
   };
 
   const options = {
-    expiresIn: "2d"
+    expiresIn: "1d"
   };
+
+  // extract the secret away so it can be required and used where needed
   return jwt.sign(payload, secrets.jwtSecret, options); // this method is synchronous
 }
 

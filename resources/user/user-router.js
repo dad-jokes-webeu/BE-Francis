@@ -2,9 +2,10 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const { findById, deleteUser, updateUser } = require("./user-model");
 
-router.get("/me", async (req, res) => {
+router.get("/", async (req, res) => {
   const { decodedJwt } = req;
   const userId = decodedJwt.subject;
+  console.log(userId)
   try {
     const user = await findById(userId);
     res.status(200).json(user);
@@ -15,7 +16,7 @@ router.get("/me", async (req, res) => {
   }
 });
 
-router.put("/me", async (req, res) => {
+router.put("/", async (req, res) => {
   const { decodedJwt } = req;
   const userId = decodedJwt.subject;
   const updates = req.body;
@@ -40,7 +41,7 @@ router.put("/me", async (req, res) => {
   }
 });
 
-router.delete("/me", async (req, res) => {
+router.delete("/", async (req, res) => {
   const { decodedJwt } = req;
   const userId = decodedJwt.subject;
   try {

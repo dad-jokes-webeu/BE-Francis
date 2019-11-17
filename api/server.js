@@ -42,7 +42,7 @@ server.use(session(sessionOptions));
 
 server.use("/api/auth", authRouter);
 server.use("/api/me", userRouter);
-server.use("/api/me/jokes", restricted, jokesRouter);
-server.use("/api/jokes", publicJokesRouter);
+server.use("/api/jokes", restricted, jokesRouter);
+server.use("/api/public", publicJokesRouter);
 
 module.exports = server;
