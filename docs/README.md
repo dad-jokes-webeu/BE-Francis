@@ -2,8 +2,9 @@
 
 ## Current
 
-This backend server now has API documentation generated thanks to Swagger. Go
-to https://home-chore-tracker.unubo.app/api-docs to view the docs.
+Made with a warm heart ❤️ and a stomach full of pasta 🍝.
+
+Go to https://dadjokes-api.herokuapp.com/api-docs/ to view the docs for the backend server.
 
 ## Legacy
 
@@ -23,7 +24,7 @@ for each of the API resource types (i.e. `User`, `Family`, `Child`, and `Chore`)
   id;
   name;
   email;
-  avatar_url: 'url'
+  avatar_url: "url";
   jokes: [
     {
       id,
@@ -80,5 +81,4 @@ for each of the API resource types (i.e. `User`, `Family`, `Child`, and `Chore`)
 {
   id, url, user_id;
 }
-
 ```
