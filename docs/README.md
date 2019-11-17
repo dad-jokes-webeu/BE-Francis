@@ -23,6 +23,7 @@ for each of the API resource types (i.e. `User`, `Family`, `Child`, and `Chore`)
   id;
   name;
   email;
+  avatar_url: 'url'
   jokes: [
     {
       id,
@@ -69,4 +70,15 @@ for each of the API resource types (i.e. `User`, `Family`, `Child`, and `Chore`)
 {
   id, setup, punchline, user_id, public;
 }
+
+/**
+ * GET /api/jokes/:id
+ *
+ * @returns {<Avatars>}
+ */
+
+{
+  id, url, user_id;
+}
+
 ```

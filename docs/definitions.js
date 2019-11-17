@@ -56,4 +56,19 @@
  *      public:
  *        type: boolean
  *        description: The privacy of the joke
+ *
+ *
+
+ *  Avatar:
+ *    type: object
+ *    properties:
+ *      id:
+ *        type: integer
+ *        description: The avatar ID.
+ *      url:
+ *        type: string
+ *        description: The url of the avatar.
+ *      user_id:
+ *        type: integer
+ *        description: The user ID that this avatar belongs to.
  */

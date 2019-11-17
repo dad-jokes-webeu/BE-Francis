@@ -10,4 +10,6 @@
  *    description:
  *  - name: Jokes
  *    description:
+ *  - name: Avatars
+ *    description: 
  */
