@@ -17,6 +17,7 @@ const convertPublicIntsToBooleans = jokes => {
 const findJokes = async (userId, options = { filter: {} }) => {
   const jokes = await db("jokes").where({
     user_id: userId,
+    public: 1,
     ...options.filter
   });
   return convertPublicIntsToBooleans(jokes);
