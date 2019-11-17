@@ -8,6 +8,7 @@ const authRouter = require("../routers/auth-router");
 const userRouter = require("../routers/user-router");
 const jokesRouter = require("../routers/jokes-router");
 const publicJokesRouter = require("../routers/public-jokes-router");
+const avatarsRouter = require("../routers/avatars-router");
 
 const secrets = require("../config/secrets");
 
@@ -71,6 +72,7 @@ server.use("/api/auth", authRouter);
 server.use("/api/me", restricted, userRouter);
 server.use("/api/jokes", restricted, jokesRouter);
 server.use("/api/public", publicJokesRouter);
+server.use("/api/avatars", restricted, avatarsRouter);
 
 server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
