@@ -49,7 +49,7 @@ function generateToken(user) {
   };
 
   const options = {
-    expiresIn: "1d"
+    expiresIn: "2d"
   };
 
   // extract the secret away so it can be required and used where needed
