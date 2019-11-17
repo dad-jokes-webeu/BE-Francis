@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
+const db = require("../database/dbConfig");
 const { findById, deleteUser, updateUser } = require("../models/user-model");
 
 /**
@@ -29,7 +30,11 @@ router.get("/", async (req, res) => {
   const userId = decodedJwt.subject;
   try {
     const user = await findById(userId);
-    res.status(200).json(user);
+    const { avatar_url } = await db("avatars")
+      .select("url as avatar_url")
+      .where({ user_id: userId })
+      .first();
+    res.status(200).json({ ...user, avatar: avatar_url || null });
   } catch (error) {
     res.status(500).json({
       error: error.message
