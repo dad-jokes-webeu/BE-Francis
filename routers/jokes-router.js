@@ -6,7 +6,7 @@ const {
   addJoke,
   updateJoke,
   deleteJoke
-} = require("./jokes-model");
+} = require("../models/jokes-model");
 
 router.get("/", async (req, res) => {
   const { decodedJwt } = req;

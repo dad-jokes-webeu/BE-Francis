@@ -2,11 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 
-const { restricted } = require("../auth/auth-middleware");
-const authRouter = require("../auth/auth-router");
-const userRouter = require("../resources/user/user-router");
-const jokesRouter = require("../resources/jokes/jokes-router");
-const publicJokesRouter = require("../resources/jokes/public-jokes-router");
+const swaggerUi = require("swagger-ui-express");
+const swaggerJSDoc = require("swagger-jsdoc");
+
+const { restricted } = require("../middleware/auth-middleware");
+const authRouter = require("../routers/auth-router");
+const userRouter = require("../routers/user-router");
+const jokesRouter = require("../routers/jokes-router");
+const publicJokesRouter = require("../routers/public-jokes-router");
 
 const secrets = require("../config/secrets");
 

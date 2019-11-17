@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const db = require("../database/dbConfig");
-const { generateToken, restricted } = require("./auth-middleware");
+const { generateToken, restricted } = require("../middleware/auth-middleware");
 
 router.post("/register", async (req, res) => {
   let { email, password, username } = req.body;

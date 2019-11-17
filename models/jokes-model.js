@@ -1,4 +1,4 @@
-const db = require("../../database/dbConfig");
+const db = require("../database/dbConfig");
 
 const convertPublicIntsToBooleans = jokes => {
   if (Array.isArray(jokes)) {

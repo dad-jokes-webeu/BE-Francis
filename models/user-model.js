@@ -1,5 +1,5 @@
-const db = require("../../database/dbConfig");
-const { findUserJokes } = require("../jokes/jokes-model");
+const db = require("../database/dbConfig");
+const { findUserJokes } = require("./jokes-model");
 
 async function add(user) {
   const ids = await db("users").insert(user, "id");
