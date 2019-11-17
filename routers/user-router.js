@@ -2,10 +2,32 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const { findById, deleteUser, updateUser } = require("../models/user-model");
 
+/**
+ * @swagger
+ * /users/me:
+ *  get:
+ *    security:
+ *      - JWTKeyHeader: []
+ *    summary: Returns the identity of the currently-logged in user
+ *    description: Returns the identity of the currently-logged in user
+ *    tags: [Users]
+ *    responses:
+ *      200:
+ *        description: Information about the logged-in user
+ *        schema:
+ *          $ref: '#/definitions/UserExpanded'
+ *      400:
+ *        description: returned if `Authorization` header is missing
+ *      401:
+ *        description: returned when JWT is either expired or malformed
+ *      500:
+ *        description: returned in the event of a server error
+ */
+
 router.get("/", async (req, res) => {
   const { decodedJwt } = req;
   const userId = decodedJwt.subject;
-  console.log(req)
+  console.log(req);
   try {
     const user = await findById(userId);
     res.status(200).json(user);
@@ -15,6 +37,45 @@ router.get("/", async (req, res) => {
     });
   }
 });
+
+/**
+ * @swagger
+ * /users/me:
+ *  put:
+ *    security:
+ *      - JWTKeyHeader: []
+ *    summary: Edit the current user's information
+ *    description: Edit the current user's information (`username`, `email`, and/or
+ *             `password`)
+ *    tags: [Users]
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: body
+ *        name: updates
+ *        description: Info to update for an existing user
+ *        schema:
+ *          type: object
+ *          properties:
+ *            username:
+ *              type: string
+ *            email:
+ *              type: string
+ *            password:
+ *              type: string
+ *    responses:
+ *      200:
+ *        description: returns the user with their updated information
+ *        schema:
+ *          $ref: '#/definitions/User'
+ *      400:
+ *        description: returned if `Authorization` header is missing, OR if
+ *                     any of `email`, `username` or `password` are missing
+ *      401:
+ *        description: returned when JWT is either expired or malformed
+ *      500:
+ *        description: returned in the event of a server error
+ */
 
 router.put("/", async (req, res) => {
   const { decodedJwt } = req;
@@ -40,6 +101,26 @@ router.put("/", async (req, res) => {
     });
   }
 });
+
+/**
+ * @swagger
+ * /users/me:
+ *  delete:
+ *    security:
+ *      - JWTKeyHeader: []
+ *    summary: Permanently delete the user from the database
+ *    description: Permanently delete the user from the database
+ *    tags: [Users]
+ *    responses:
+ *      204:
+ *        description: returns nothing if successful
+ *      400:
+ *        description: returned if `Authorization` header is missing
+ *      401:
+ *        description: returned when JWT is either expired or malformed
+ *      500:
+ *        description: returned in the event of a server error
+ */
 
 router.delete("/", async (req, res) => {
   const { decodedJwt } = req;
