@@ -2,7 +2,7 @@
 
 ## Current
 
-Made with a warm heart ❤️ and a stomach full of pasta 🍝.
+Made with NodeJS, Express, a warm heart ❤️ and a stomach full of pasta 🍝 .
 
 Go to https://dadjokes-api.herokuapp.com/api-docs/ to view the docs for the backend server.
 
