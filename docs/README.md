@@ -9,7 +9,7 @@ Go to https://dadjokes-api.herokuapp.com/api-docs/ to view the docs for the back
 ## Legacy
 
 This document outlines the expected JSON object response for the `GET` requests
-for each of the API resource types (i.e. `User`, `Family`, `Child`, and `Chore`).
+for each of the API resource types.
 
 > **Note:** all API requests expect an `Authorization` header containing the JWT
 > token for the currently logged-in user (as defined by `GET /api/users/me`).
