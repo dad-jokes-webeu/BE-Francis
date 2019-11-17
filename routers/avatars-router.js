@@ -19,6 +19,19 @@ const storage = cloudinaryStorage({
 });
 const parser = multer({ storage: storage });
 
+router.get("/", async (req, res) => {
+  const { decodedJwt } = req;
+  const userId = decodedJwt.subject;
+  try {
+    const [avatar] = await db("avatars").where({ user_id: userId });
+    res.status(200).json(avatar);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
 router.post("/", parser.single("image"), async (req, res) => {
   const url = req.file.url;
   const { decodedJwt } = req;
