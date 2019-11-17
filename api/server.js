@@ -38,6 +38,28 @@ const sessionOptions = {
   })
 };
 
+const { version, description } = require("../package.json");
+
+const swaggerDefinition = {
+  info: {
+    title: "Dad Jokes API - Lambda Build Week",
+    version,
+    description
+  },
+  host:
+    process.env.NODE_ENV === "production"
+      ? "dad-jokes-api.herokuapp.com"
+      : `localhost:${process.env.PORT || 4000}`,
+  basePath: "/api/"
+};
+
+const docOptions = {
+  swaggerDefinition,
+  apis: ["./docs/*.js", "./routers/*.js"]
+};
+
+const swaggerSpec = swaggerJSDoc(docOptions);
+
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
@@ -47,5 +69,7 @@ server.use("/api/auth", authRouter);
 server.use("/api/me", restricted, userRouter);
 server.use("/api/jokes", restricted, jokesRouter);
 server.use("/api/public", publicJokesRouter);
+
+server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 module.exports = server;
