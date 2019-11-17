@@ -55,11 +55,10 @@ router.post("/register", async (req, res) => {
       username,
       password: hash
     });
-    const user = await db("users")
+    const [user] = await db("users")
       .select("username", "password")
       .where({ id });
-    const token = generateToken(user);
-    return res.status(201).json({ user: user, token });
+    return res.status(201).json(user);
   } catch (error) {
     res.status(500).json({
       error: error.message
