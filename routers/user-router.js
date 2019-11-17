@@ -27,7 +27,6 @@ const { findById, deleteUser, updateUser } = require("../models/user-model");
 router.get("/", async (req, res) => {
   const { decodedJwt } = req;
   const userId = decodedJwt.subject;
-  console.log(req);
   try {
     const user = await findById(userId);
     res.status(200).json(user);
