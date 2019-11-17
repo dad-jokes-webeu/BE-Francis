@@ -6,6 +6,13 @@ async function add(user) {
   return findById(ids[0]);
 }
 
+
+
+/**
+ * 
+ * @param {Integer} userId id of the currently-authenticated user
+ */
+
 async function findById(userId) {
   const user = await db("users")
     .select("id", "email", "username")
@@ -15,6 +22,13 @@ async function findById(userId) {
   return { ...user, jokes };
 }
 
+/**
+ *
+ * @param {Integer} userId id of the currently-authenticated user
+ * @param {Object} updates object containing the desired properties of user to
+ *                         update (any of `name`, `email`, or `password`, or `picutreURL`)
+ */
+
 async function updateUser(id, updates) {
   await db("users")
     .where({ id: id })
@@ -22,6 +36,12 @@ async function updateUser(id, updates) {
   const user = await findById(id);
   return user;
 }
+
+
+/**
+ *
+ * @param {Integer} userId id of the currently-authenticated user
+ */
 
 async function deleteUser(id) {
   await db("users")

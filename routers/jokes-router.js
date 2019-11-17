@@ -16,7 +16,7 @@ const {
  *      - JWTKeyHeader: []
  *    summary: Returns all jokes that belong to the logged-in user
  *    description: Returns all jokes that belong to the logged-in user
- *    tags: [jokes]
+ *    tags: [Jokes]
  *    responses:
  *      200:
  *        description: returns an array of jokes for the given user

@@ -19,12 +19,31 @@ const findUserJokes = async userId => {
   return convertPublicIntsToBooleans(jokes);
 };
 
-const findJokes = async userId => {
+/**
+ *
+ * @param {Integer} userId id of the currently-authenticated user
+ * @param {Object} options
+ * @param {Object} options.filter object containing key-value pairs mapping to
+ *                                a predicate to be used in a SQL `WHERE` clause
+ */
+
+const findJokes = async (userId, options = { filter: {} }) => {
   const jokes = await db("jokes")
-    .where({ user_id: userId })
+    .where({ user_id: userId, ...options.filter })
     .orWhere({ public: 1 });
   return convertPublicIntsToBooleans(jokes);
 };
+
+
+/**
+ *
+ * @param {Integer} userId id of the currently-authenticated user
+ * @param {Integer} jokeId id of the joke to look for and return if found
+ * @param {Object} options
+ * @param {Object} options.filter object containing key-value pairs mapping to
+ *                                a predicate to be used in a SQL `WHERE` clause
+ */
+
 
 const findJokeById = async (userId, jokeId, options = { filter: {} }) => {
   const [joke] = await db("jokes").where({

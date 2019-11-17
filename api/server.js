@@ -1,11 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
-
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 
-const { restricted } = require("../middleware/auth-middleware");
 const authRouter = require("../routers/auth-router");
 const userRouter = require("../routers/user-router");
 const jokesRouter = require("../routers/jokes-router");
@@ -15,6 +13,8 @@ const secrets = require("../config/secrets");
 
 const session = require("express-session");
 const knexSessionStore = require("connect-session-knex")(session);
+
+const { restricted } = require("../middleware/auth-middleware");
 
 const server = express();
 
@@ -71,5 +71,6 @@ server.use("/api/jokes", restricted, jokesRouter);
 server.use("/api/public", publicJokesRouter);
 
 server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 module.exports = server;
