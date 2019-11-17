@@ -41,7 +41,7 @@ server.use(express.json());
 server.use(session(sessionOptions));
 
 server.use("/api/auth", authRouter);
-server.use("/api/me", userRouter);
+server.use("/api/me", restricted, userRouter);
 server.use("/api/jokes", restricted, jokesRouter);
 server.use("/api/public", publicJokesRouter);
 

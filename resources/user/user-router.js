@@ -5,7 +5,7 @@ const { findById, deleteUser, updateUser } = require("./user-model");
 router.get("/", async (req, res) => {
   const { decodedJwt } = req;
   const userId = decodedJwt.subject;
-  console.log(userId)
+  console.log(req)
   try {
     const user = await findById(userId);
     res.status(200).json(user);
