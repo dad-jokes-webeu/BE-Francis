@@ -15,6 +15,10 @@
     "type": "git",
     "url": "git+https://github.com/dad-jokes-webeu/BE-Francis.git"
   },
+  "engines": {
+    "node": "12.13.0",
+    "npm": "6.12.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

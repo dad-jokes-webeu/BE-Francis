@@ -49,9 +49,11 @@ const swaggerDefinition = {
   host:
     process.env.NODE_ENV === "production"
       ? "dad-jokes-api.herokuapp.com"
-      : `localhost:${process.env.PORT || 4000}`,
+      : `localhost:${process.env.PORT}`,
   basePath: "/api/"
 };
+
+console.log(process.env.NODE_ENV)
 
 const docOptions = {
   swaggerDefinition,
@@ -71,6 +73,5 @@ server.use("/api/jokes", restricted, jokesRouter);
 server.use("/api/public", publicJokesRouter);
 
 server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 
 module.exports = server;

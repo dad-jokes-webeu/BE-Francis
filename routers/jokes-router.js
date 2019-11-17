@@ -14,12 +14,12 @@ const {
  *  get:
  *    security:
  *      - JWTKeyHeader: []
- *    summary: Returns all jokes that belong to the logged-in user
+ *    summary: Returns all jokes that belong to the logged-in user AND jokes that have been listed as public by other users
  *    description: Returns all jokes that belong to the logged-in user
  *    tags: [Jokes]
  *    responses:
  *      200:
- *        description: returns an array of jokes for the given user
+ *        description: returns an array of jokes for the given user and all public jokes
  *        schema:
  *          type: array
  *          description: The jokes that belong to the authenticated user.
@@ -264,7 +264,6 @@ router.put("/:id", async (req, res) => {
  *      500:
  *        description: returned in the event of a server error
  */
-
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
