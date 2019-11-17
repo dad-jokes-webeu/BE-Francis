@@ -55,7 +55,7 @@ router.post("/register", async (req, res) => {
       username,
       password: hash
     });
-    const [user] = await db("users")
+    const user = await db("users")
       .select("username", "password")
       .where({ id });
     const token = generateToken(user);
