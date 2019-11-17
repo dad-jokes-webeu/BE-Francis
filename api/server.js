@@ -48,12 +48,12 @@ const swaggerDefinition = {
   },
   host:
     process.env.NODE_ENV === "production"
-      ? "dad-jokes-api.herokuapp.com"
+      ? "dadjokes-api.herokuapp.com"
       : `localhost:${process.env.PORT}`,
   basePath: "/api/"
 };
 
-console.log(process.env.NODE_ENV)
+console.log(process.env.NODE_ENV);
 
 const docOptions = {
   swaggerDefinition,
