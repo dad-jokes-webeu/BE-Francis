@@ -9,9 +9,11 @@ const convertPrivateIntsToBooleans = jokes => {
       };
     });
     return jokes;
-  } else {
-    return { ...jokes, private: jokes.private === 0 || false ? false : true };
   }
+};
+
+const convertPrivateIntsOnSingleJokeToBooleans = joke => {
+  return { ...joke, private: joke.private === 0 || false ? false : true };
 };
 
 /**
@@ -38,7 +40,7 @@ const findJokeById = async (userId, jokeId, options = { filter: {} }) => {
     id: jokeId,
     ...options.filter
   });
-  return convertPrivateIntsToBooleans(joke);
+  return convertPrivateIntsOnSingleJokeToBooleans(joke);
 };
 
 const addJoke = async (userId, joke) => {
