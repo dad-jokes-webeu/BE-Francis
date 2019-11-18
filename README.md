@@ -52,14 +52,14 @@ for each of the API resource types.
     setup,
     punchline,
     user_id,
-    public
+    private
   },
   {
     id,
     setup,
     punchline,
     user_id,
-    public
+    private
   }
 ];
 
@@ -69,7 +69,7 @@ for each of the API resource types.
  * @returns {<Joke>}
  */
 {
-  id, setup, punchline, user_id, public;
+  id, setup, punchline, user_id, private;
 }
 
 /**

@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const {
-  findJokes,
   findUserJokes,
   findJokeById,
   addJoke,
@@ -10,16 +9,16 @@ const {
 
 /**
  * @swagger
- * /jokes:
+ * /jokes/me:
  *  get:
  *    security:
  *      - JWTKeyHeader: []
- *    summary: Returns all jokes that belong to the logged-in user AND jokes that have been listed as public by other users
+ *    summary: Returns all jokes that belong to the logged-in user
  *    description: Returns all jokes that belong to the logged-in user
  *    tags: [Jokes]
  *    responses:
  *      200:
- *        description: returns an array of jokes for the given user and all public jokes
+ *        description: returns an array of jokes for the given user
  *        schema:
  *          type: array
  *          description: The jokes that belong to the authenticated user.
@@ -37,19 +36,6 @@ router.get("/", async (req, res) => {
   const { decodedJwt } = req;
   const userId = decodedJwt.subject;
   try {
-    const jokes = await findJokes(userId);
-    res.status(200).json(jokes);
-  } catch (error) {
-    res.status(500).json({
-      error: error.message
-    });
-  }
-});
-
-router.get("/me", async (req, res) => {
-  const { decodedJwt } = req;
-  const userId = decodedJwt.subject;
-  try {
     const jokes = await findUserJokes(userId);
     res.status(200).json(jokes);
   } catch (error) {
@@ -61,7 +47,7 @@ router.get("/me", async (req, res) => {
 
 /**
  * @swagger
- * /jokes/{id}:
+ * /jokes/me/{id}:
  *  get:
  *    security:
  *      - JWTKeyHeader: []
@@ -135,7 +121,7 @@ router.get("/:id", async (req, res) => {
  *              type: string
  *            user_id:
  *              type: integer
- *            public: defaults to false
+ *            private: 
  *              type: boolean
  *    responses:
  *      201:
@@ -170,7 +156,7 @@ router.post("/", async (req, res) => {
 
 /**
  * @swagger
- * /jokes/{id}:
+ * /jokes/me/{id}:
  *  put:
  *    security:
  *      - JWTKeyHeader: []
@@ -200,7 +186,7 @@ router.post("/", async (req, res) => {
  *              type: string
  *            user_id:
  *              type: integer
- *            public:
+ *            private:
  *              type: boolean
  *    responses:
  *      200:
@@ -239,7 +225,7 @@ router.put("/:id", async (req, res) => {
 
 /**
  * @swagger
- * /jokes/{id}:
+ * /jokes/me/{id}:
  *  delete:
  *    security:
  *      - JWTKeyHeader: []

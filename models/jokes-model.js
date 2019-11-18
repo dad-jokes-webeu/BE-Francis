@@ -1,37 +1,27 @@
 const db = require("../database/dbConfig");
 
-const convertPublicIntsToBooleans = jokes => {
+const convertPrivateIntsToBooleans = jokes => {
   if (Array.isArray(jokes)) {
     jokes.forEach(joke => {
       return {
         ...joke,
-        public: joke.public === 0 ? false : true
+        private: joke.private === 0 ? false : true
       };
     });
+    return jokes;
   } else {
-    jokes.public = jokes.public === 0 ? false : true;
+    jokes.private = jokes.private === 0 ? false : true;
+    return jokes;
   }
-  return jokes;
-};
-
-const findUserJokes = async userId => {
-  const jokes = await db("jokes").where({ user_id: userId });
-  return convertPublicIntsToBooleans(jokes);
 };
 
 /**
- *
  * @param {Integer} userId id of the currently-authenticated user
- * @param {Object} options
- * @param {Object} options.filter object containing key-value pairs mapping to
- *                                a predicate to be used in a SQL `WHERE` clause
  */
 
-const findJokes = async (userId, options = { filter: {} }) => {
-  const jokes = await db("jokes")
-    .where({ user_id: userId, ...options.filter })
-    .orWhere({ public: 1 });
-  return convertPublicIntsToBooleans(jokes);
+const findUserJokes = async userId => {
+  const jokes = await db("jokes").where({ user_id: userId });
+  return convertPrivateIntsToBooleans(jokes);
 };
 
 /**
@@ -49,7 +39,7 @@ const findJokeById = async (userId, jokeId, options = { filter: {} }) => {
     id: jokeId,
     ...options.filter
   });
-  return convertPublicIntsToBooleans(joke);
+  return convertPrivateIntsToBooleans(joke);
 };
 
 const addJoke = async (userId, joke) => {
@@ -73,7 +63,6 @@ const deleteJoke = async (userId, jokeId) => {
 
 module.exports = {
   findUserJokes,
-  findJokes,
   findJokeById,
   addJoke,
   updateJoke,

@@ -53,7 +53,7 @@
  *      punchline:
  *        type: string
  *        description: The punchline of the joke.
- *      public:
+ *      private:
  *        type: boolean
  *        description: The privacy of the joke
  *

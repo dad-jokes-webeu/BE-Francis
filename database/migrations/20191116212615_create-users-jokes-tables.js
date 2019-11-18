@@ -18,9 +18,9 @@ exports.up = function(knex) {
       table.string("setup", 500).notNullable();
       table.string("punchline", 500).notNullable();
       table
-        .boolean("public")
+        .boolean("private")
         .notNullable()
-        .defaultTo(0);
+        .defaultTo(1);
       table
         .integer("user_id")
         .unsigned()

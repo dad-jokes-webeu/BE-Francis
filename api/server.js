@@ -70,8 +70,8 @@ server.use(session(sessionOptions));
 
 server.use("/api/auth", authRouter);
 server.use("/api/me", restricted, userRouter);
-server.use("/api/jokes", restricted, jokesRouter);
-server.use("/api/public", publicJokesRouter);
+server.use("/api/jokes/me", restricted, jokesRouter);
+server.use("/api/jokes/public", publicJokesRouter);
 server.use("/api/avatars/me", restricted, avatarsRouter);
 
 server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
