@@ -44,9 +44,6 @@ const { generateToken, restricted } = require("../middleware/auth-middleware");
  *      email:
  *        type: string
  *        description: The email associated with this user. Used for logging in.
- *      password:
- *        type: string
- *        description: The hashed password associated with this user.
  *      400:
  *        description: returned if any of `email`, `username`, or `password` are
  *                     missing
