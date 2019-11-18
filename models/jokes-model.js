@@ -10,7 +10,8 @@ const convertPrivateIntsToBooleans = jokes => {
     });
     return jokes;
   } else {
-    return {...jokes, private: private === 0 || false ? false : true}
+    return { ...jokes, private: private === 0 || false ? false : true };
+  }
 };
 
 /**
