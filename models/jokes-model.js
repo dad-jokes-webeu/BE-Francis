@@ -12,10 +12,6 @@ const convertPrivateIntsToBooleans = jokes => {
   }
 };
 
-const convertPrivateIntsOnSingleJokeToBooleans = joke => {
-  return { ...joke, private: joke.private === 0 ? false : true };
-};
-
 /**
  * @param {Integer} userId id of the currently-authenticated user
  */
