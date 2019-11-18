@@ -59,7 +59,7 @@ router.post("/register", async (req, res) => {
       "id"
     );
     const [user] = await db("users")
-      .select("email", "username")
+      .select("id", "username", "email")
       .where({ id });
     return res.status(201).json(user);
   } catch (error) {
