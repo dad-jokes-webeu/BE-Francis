@@ -8,9 +8,8 @@ const convertPublicIntsToBooleans = jokes => {
         public: joke.public === 0 ? false : true
       };
     });
-  } else {
-    jokes.public = jokes.public === 0 ? false : true;
-  }
+  } else return { ...jokes, public: jokes.public === 0 ? false : true };
+
   return jokes;
 };
 
