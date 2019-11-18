@@ -5,14 +5,12 @@ const convertPrivateIntsToBooleans = jokes => {
     jokes.forEach(joke => {
       return {
         ...joke,
-        private: joke.private === 0 ? false : true
+        private: joke.private === 0 || false ? false : true
       };
     });
     return jokes;
   } else {
-    jokes.private = jokes.private === 0 ? false : true;
-    return jokes;
-  }
+    return {...jokes, private: private === 0 || false ? false : true}
 };
 
 /**
