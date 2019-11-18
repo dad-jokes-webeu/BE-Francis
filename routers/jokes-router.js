@@ -148,6 +148,7 @@ router.post("/", async (req, res) => {
     if (!setup || !punchline) {
       res.status(400).json({ error: "Setup and punchline are required!" });
     } else {
+      joke.private = joke.private === false || 0 ? 0 : 1;
       const newJoke = await addJoke(userId, joke);
       res.status(201).json(newJoke);
     }
