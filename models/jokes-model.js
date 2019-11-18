@@ -13,7 +13,7 @@ const convertPrivateIntsToBooleans = jokes => {
 };
 
 const convertPrivateIntsOnSingleJokeToBooleans = joke => {
-  return { ...joke, private: joke.private === 0 || false ? false : true };
+  return { ...joke, private: joke.private === 0 ? false : true };
 };
 
 /**
@@ -40,7 +40,7 @@ const findJokeById = async (userId, jokeId, options = { filter: {} }) => {
     id: jokeId,
     ...options.filter
   });
-  return convertPrivateIntsOnSingleJokeToBooleans(joke);
+  return joke;
 };
 
 const addJoke = async (userId, joke) => {
