@@ -52,16 +52,14 @@ router.post("/register", async (req, res) => {
     const hash = bcrypt.hashSync(password, 10);
     const [id] = await db("users").insert({
       email,
-      username,
+      name,
       password: hash
     });
-    const user = await db("users")
-      .where({ id })
-      .first();
+    const [user] = await db("users").where({ id });
     return res.status(201).json(user);
   } catch (error) {
     res.status(500).json({
-      error: error
+      error: error.message
     });
   }
 });
