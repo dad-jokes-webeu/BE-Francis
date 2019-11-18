@@ -52,7 +52,7 @@ router.post("/register", async (req, res) => {
     const hash = bcrypt.hashSync(password, 10);
     const [id] = await db("users").insert({
       email,
-      name,
+      username,
       password: hash
     });
     const [user] = await db("users").where({ id });
