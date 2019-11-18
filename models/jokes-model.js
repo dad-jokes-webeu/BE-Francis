@@ -7,14 +7,13 @@ const convertPublicIntsToBooleans = jokes => {
       public: jokes.public === 0 ? false : true
     };
   } else if (Array.isArray(jokes) && jokes.length) {
-    jokes.forEach(joke => {
+    return jokes.map(joke => {
       return {
         ...joke,
         public: joke.public === 0 ? false : true
       };
     });
   }
-  return jokes;
 };
 
 const findUserJokes = async userId => {
