@@ -96,7 +96,7 @@ router.get("/:id", async (req, res) => {
 
 /**
  * @swagger
- * /jokes:
+ * /jokes/me:
  *  post:
  *    security:
  *      - JWTKeyHeader: []
@@ -115,13 +115,15 @@ router.get("/:id", async (req, res) => {
  *            - setup
  *            - punchline
  *          properties:
+ *            id:
+ *              type: integer
  *            setup:
  *              type: string
  *            punchline:
  *              type: string
  *            user_id:
  *              type: integer
- *            private: 
+ *            private:
  *              type: boolean
  *    responses:
  *      201:
