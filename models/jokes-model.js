@@ -1,15 +1,19 @@
 const db = require("../database/dbConfig");
 
 const convertPublicIntsToBooleans = jokes => {
-  if (Array.isArray(jokes)) {
+  if (jokes === Object(jokes)) {
+    return {
+      ...jokes,
+      public: jokes.public === 0 ? false : true
+    };
+  } else if (Array.isArray(jokes) && jokes.length) {
     jokes.forEach(joke => {
       return {
         ...joke,
         public: joke.public === 0 ? false : true
       };
     });
-  } else return { ...jokes, public: jokes.public === 0 ? false : true };
-
+  }
   return jokes;
 };
 
