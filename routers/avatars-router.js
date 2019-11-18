@@ -62,8 +62,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-
-
 /**
  * @swagger
  * /avatars/me:
@@ -106,13 +104,12 @@ router.get("/", async (req, res) => {
  *        description: returned in the event of a server error
  */
 
-
 router.post("/", parser.single("image"), async (req, res) => {
   const url = req.file.url;
   const { decodedJwt } = req;
   const user_id = decodedJwt.subject;
   try {
-    const [url_id] = await db("avatars").insert({ url, user_id });
+    const [url_id] = await db("avatars").insert({ url, user_id }, "id");
     const stored_url = findAvatarById(url_id);
     return res.status(201).json(stored_url);
   } catch (error) {
@@ -159,7 +156,6 @@ router.post("/", parser.single("image"), async (req, res) => {
  *      500:
  *        description: returned in the event of a server error
  */
-
 
 router.put("/:id", parser.single("image"), async (req, res) => {
   const url = req.file.url;

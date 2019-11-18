@@ -34,7 +34,6 @@ const findJokes = async (userId, options = { filter: {} }) => {
   return convertPublicIntsToBooleans(jokes);
 };
 
-
 /**
  *
  * @param {Integer} userId id of the currently-authenticated user
@@ -43,7 +42,6 @@ const findJokes = async (userId, options = { filter: {} }) => {
  * @param {Object} options.filter object containing key-value pairs mapping to
  *                                a predicate to be used in a SQL `WHERE` clause
  */
-
 
 const findJokeById = async (userId, jokeId, options = { filter: {} }) => {
   const [joke] = await db("jokes").where({
@@ -55,7 +53,7 @@ const findJokeById = async (userId, jokeId, options = { filter: {} }) => {
 };
 
 const addJoke = async (userId, joke) => {
-  const [id] = await db("jokes").insert({ ...joke, user_id: userId });
+  const [id] = await db("jokes").insert({ ...joke, user_id: userId }, "id");
 
   return findJokeById(userId, id);
 };
