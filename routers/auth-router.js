@@ -33,17 +33,7 @@ const { generateToken, restricted } = require("../middleware/auth-middleware");
  *      201:
  *        description: returns the newly-created user
  *        schema:
- *          type: object
- *    properties:
- *      id:
- *        type: integer
- *        description: The user ID.
- *      username:
- *        type: string
- *        description: The username of the user.
- *      email:
- *        type: string
- *        description: The email associated with this user. Used for logging in.
+ *          $ref: '#/definitions/User'
  *      400:
  *        description: returned if any of `email`, `username`, or `password` are
  *                     missing
@@ -68,9 +58,7 @@ router.post("/register", async (req, res) => {
       },
       "id"
     );
-    const [user] = await db("users")
-      .select("id", "username", "email")
-      .where({ id });
+    const [user] = await db("users").where({ id });
     return res.status(201).json(user);
   } catch (error) {
     res.status(500).json({

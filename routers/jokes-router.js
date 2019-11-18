@@ -135,7 +135,7 @@ router.get("/:id", async (req, res) => {
  *              type: string
  *            user_id:
  *              type: integer
- *            public:
+ *            public: `defaults to false`
  *              type: boolean
  *    responses:
  *      201:
