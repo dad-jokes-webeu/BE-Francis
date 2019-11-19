@@ -108,6 +108,7 @@ router.get("/:id", async (req, res) => {
         error: "No joke found with the given id"
       });
     }
+    joke.private = joke.private === 1 ? true : false;
     res.status(200).json(joke);
   } catch (error) {
     res.status(500).json({
@@ -171,6 +172,7 @@ router.post("/", async (req, res) => {
       res.status(400).json({ error: "Setup and punchline are required!" });
     } else {
       const newJoke = await addJoke(userId, joke);
+      newJoke.private = newJoke.private === 1 ? true : false;
       res.status(201).json(newJoke);
     }
   } catch (error) {
