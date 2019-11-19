@@ -266,4 +266,13 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.post("/:id/likes", async (req, res) => {
+  const { id } = req.params;
+  const { decodedJwt } = req;
+  const userId = decodedJwt.subject;
+  try {
+    await db("")
+  }
+});
+
 module.exports = router;

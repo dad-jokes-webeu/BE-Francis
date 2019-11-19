@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const db = require("../database/dbConfig");
-const { findById, deleteUser, updateUser } = require("../models/user-model");
+const { deleteUser, updateUser } = require("../models/user-model");
 
 /**
  * @swagger
@@ -29,12 +29,17 @@ router.get("/", async (req, res) => {
   const { decodedJwt } = req;
   const userId = decodedJwt.subject;
   try {
-    const user = await findById(userId);
-    const { avatar_url } = await db("avatars")
-      .select("url as avatar_url")
-      .where({ user_id: userId })
+    const user = await db("users")
+      .leftJoin("avatars", "avatars.user_id", "users.id")
+      .select(
+        "users.id",
+        "users.username",
+        "users.email",
+        "avatars.url as avatar_url"
+      )
+      .where("users.id", userId)
       .first();
-    res.status(200).json({ ...user, avatar: avatar_url || null });
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({
       error: error.message

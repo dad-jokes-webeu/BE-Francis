@@ -31,6 +31,7 @@ router.get("/", async (req, res) => {
     const jokes = await db("jokes")
       .join("users", "users.id", "jokes.user_id")
       .leftJoin("avatars", "avatars.user_id", "jokes.user_id")
+      .count("jokes.joke_id as likes", )
       .select(
         "jokes.id",
         "jokes.setup",

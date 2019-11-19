@@ -45,6 +45,14 @@ const addJoke = async (userId, joke) => {
   return findJokeById(userId, id);
 };
 
+const addLike = async (userId, jokeId) => {
+  const [id] = await db("likes").insert(
+    { joke_id: jokeId, liker_id: userId },
+    "id"
+  );
+  return id;
+};
+
 const updateJoke = async (userId, jokeId, updates) => {
   await db("jokes")
     .where({ user_id: userId, id: jokeId })
@@ -63,5 +71,6 @@ module.exports = {
   findJokeById,
   addJoke,
   updateJoke,
-  deleteJoke
+  deleteJoke,
+  addLike
 };
