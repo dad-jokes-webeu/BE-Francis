@@ -29,6 +29,7 @@ exports.up = function(knex) {
         .inTable("users")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
+      table.timestamp("created_at").defaultTo(knex.fn.now());
     });
 };
 

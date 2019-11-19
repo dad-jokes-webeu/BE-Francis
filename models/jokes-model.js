@@ -1,5 +1,6 @@
 const db = require("../database/dbConfig");
 
+
 const convertPrivateIntsToBooleans = jokes => {
   if (Array.isArray(jokes)) {
     jokes.forEach(joke => {

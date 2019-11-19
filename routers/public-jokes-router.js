@@ -31,7 +31,9 @@ router.get("/", async (req, res) => {
     const jokes = await db("jokes")
       .join("users", "users.id", "jokes.user_id")
       .leftJoin("avatars", "avatars.user_id", "jokes.user_id")
-      .count("jokes.joke_id as likes", )
+      .leftJoin("likes", "likes.joke_id", "jokes.id")
+      .count("likes.joke_id as likes", "jokes.id")
+      .groupBy("jokes.id")
       .select(
         "jokes.id",
         "jokes.setup",
@@ -41,7 +43,26 @@ router.get("/", async (req, res) => {
         "avatars.url as user_avatar"
       )
       .where({ private: 0 });
-    res.status(200).json(jokes);
+
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+
+    const startIndex = (page - 1) * 5;
+    const endIndex = page * 5;
+    const results = {};
+
+    if (endIndex < jokes.length) {
+      results.next = page + 1;
+    }
+    if (startIndex > 0) {
+      results.previous = page - 1;
+    }
+
+    if (!jokes[endIndex]) {
+      results.warning = "last page";
+    }
+
+    results.results = jokes.slice(startIndex, endIndex);
+    res.status(200).json(results);
   } catch (error) {
     res.status(500).json({
       error: error.message

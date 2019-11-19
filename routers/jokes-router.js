@@ -4,7 +4,8 @@ const {
   findJokeById,
   addJoke,
   updateJoke,
-  deleteJoke
+  deleteJoke,
+  addLike
 } = require("../models/jokes-model");
 
 /**
@@ -37,7 +38,28 @@ router.get("/", async (req, res) => {
   const userId = decodedJwt.subject;
   try {
     const jokes = await findUserJokes(userId);
-    res.status(200).json(jokes);
+
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+
+    const startIndex = (page - 1) * 5;
+    const endIndex = page * 5;
+    const results = {};
+
+    if (jokes) {
+      if (endIndex < jokes.length) {
+        results.next = page + 1;
+      }
+      if (startIndex > 0) {
+        results.previous = page - 1;
+      }
+
+      if (!jokes[endIndex]) {
+        results.warning = "last page";
+      }
+
+      results.results = jokes.slice(startIndex, endIndex);
+      res.status(200).json(results);
+    } else res.status(200).json(jokes);
   } catch (error) {
     res.status(500).json({
       error: error.message
@@ -271,7 +293,10 @@ router.post("/:id/likes", async (req, res) => {
   const { decodedJwt } = req;
   const userId = decodedJwt.subject;
   try {
-    await db("")
+    const likeId = await addLike(userId, id);
+    res.status(201).json({ newLikeId: likeId, jokeId: id, likerId: userId });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
