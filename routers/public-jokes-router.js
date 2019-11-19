@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const db = require("../database/dbConfig");
 
-
 /**
  * @swagger
  * /jokes/public:
@@ -27,11 +26,20 @@ const db = require("../database/dbConfig");
  *        description: returned in the event of a server error
  */
 
-
-
 router.get("/", async (req, res) => {
   try {
-    const jokes = await db("jokes").where({ private: 0 });
+    const jokes = await db("jokes")
+      .join("users", "users.id", "jokes.user_id")
+      .leftJoin("avatars", "avatars.user_id", "jokes.user_id")
+      .select(
+        "jokes.id",
+        "jokes.setup",
+        "jokes.punchline",
+        "jokes.private",
+        "users.username as user_username",
+        "avatars.url as user_avatar"
+      )
+      .where({ private: 0 });
     res.status(200).json(jokes);
   } catch (error) {
     res.status(500).json({
