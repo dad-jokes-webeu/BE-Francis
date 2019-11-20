@@ -22,7 +22,7 @@ const findUserJokes = async userId => {
     .leftJoin("avatars", "avatars.user_id", "jokes.user_id")
     .leftJoin("likes", "likes.joke_id", "jokes.id")
     .count("likes.joke_id as likes", "jokes.id")
-    .groupBy("jokes.id")
+    .groupBy("jokes.id", "jokes.setup", "jokes.punchline", "jokes.private","users.username")
     .select(
       "jokes.id",
       "jokes.setup",
@@ -49,7 +49,7 @@ const findJokeById = async (userId, jokeId, options = { filter: {} }) => {
     .join("users", "users.id", "jokes.user_id")
     .leftJoin("likes", "likes.joke_id", "jokes.id")
     .count("likes.joke_id as likes", "jokes.id")
-    .groupBy("jokes.id")
+    .groupBy("jokes.id", "jokes.setup", "jokes.punchline", "jokes.private","users.username")
     .select(
       "jokes.id",
       "jokes.setup",
