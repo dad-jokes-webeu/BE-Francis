@@ -1,16 +1,20 @@
 const router = require("express").Router();
+const db = require("../database/dbConfig");
 const {
   findUserJokes,
   findJokeById,
   addJoke,
   updateJoke,
   deleteJoke,
-  addLike
+  addLike,
+  getLikes,
+  getLikesForAJoke,
+  removeLike
 } = require("../models/jokes-model");
 
 /**
  * @swagger
- * /jokes/me:
+ * /me/jokes:
  *  get:
  *    security:
  *      - JWTKeyHeader: []
@@ -69,7 +73,7 @@ router.get("/", async (req, res) => {
 
 /**
  * @swagger
- * /jokes/me/{id}:
+ * /me/jokes/{id}:
  *  get:
  *    security:
  *      - JWTKeyHeader: []
@@ -119,7 +123,7 @@ router.get("/:id", async (req, res) => {
 
 /**
  * @swagger
- * /jokes/me:
+ * /me/jokes:
  *  post:
  *    security:
  *      - JWTKeyHeader: []
@@ -182,7 +186,7 @@ router.post("/", async (req, res) => {
 
 /**
  * @swagger
- * /jokes/me/{id}:
+ * /me/jokes/{id}:
  *  put:
  *    security:
  *      - JWTKeyHeader: []
@@ -251,7 +255,7 @@ router.put("/:id", async (req, res) => {
 
 /**
  * @swagger
- * /jokes/me/{id}:
+ * /me/jokes/{id}:
  *  delete:
  *    security:
  *      - JWTKeyHeader: []
@@ -289,13 +293,169 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /me/jokes/{id}/likes:
+ *  post:
+ *    security:
+ *      - JWTKeyHeader: []
+ *    summary: Creates a new joke belonging to the logged-in user
+ *    description: Creates a new joke belonging to the logged-in user
+ *    tags: [Jokes]
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: body
+ *        name: joke
+ *        description: The joke to create
+ *        schema:
+ *          type: object
+ *          required:
+ *            - setup
+ *            - punchline
+ *          properties:
+ *            id:
+ *              type: integer
+ *            joke_id:
+ *              type: integer
+ *            liker_id
+ *              type: integer
+ *    responses:
+ *      201:
+ *        description: returns the newly-created joke
+ *        schema:
+ *          $ref: '#/definitions/Joke'
+ *      400:
+ *        description: returned if `Authorization` header is missing, OR if the
+ *                     required properties are missing
+ *      401:
+ *        description: returned when JWT is either expired or malformed
+ *      500:
+ *        description: returned in the event of a server error
+ */
+
 router.post("/:id/likes", async (req, res) => {
   const { id } = req.params;
   const { decodedJwt } = req;
   const userId = decodedJwt.subject;
   try {
     const likeId = await addLike(userId, id);
-    res.status(201).json({ newLikeId: likeId, jokeId: id, likerId: userId });
+    res.status(201).json({ id: likeId, joke_id: id, liker_id: userId });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+/**
+ * @swagger
+ * /me/jokes/likes:
+ *  get:
+ *    security:
+ *      - JWTKeyHeader: []
+ *    summary: Returns all the like objects in the database
+ *    description: Returns all the like objects in the database
+ *    tags: [Jokes]
+ *    responses:
+ *      200:
+ *        description: returns an array of objecrs of all likes in the database
+ *        schema:
+ *          $ref: '#/definitions/Like'
+ *      400:
+ *        description: returned if `Authorization` header is missing
+ *      401:
+ *        description: returned when JWT is either expired or malformed, OR if
+ *                     no joke belonging to the current user could be found with
+ *                     the given ID
+ *      500:
+ *        description: returned in the event of a server error
+ */
+
+
+router.get("/likes", async (req, res) => {
+  try {
+    const allLikes = await getLikes();
+    res.status.json(allLikes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * @swagger
+ * /me/jokes/{id}/likes:
+ *  get:
+ *    security:
+ *      - JWTKeyHeader: []
+ *    summary: Returns all the like objects for a given joke
+ *    description: Returns all the like objects for a given joke
+ *    tags: [Jokes]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: integer
+ *        description: ID belonging to the joke to retrieve likes
+ *    responses:
+ *      200:
+ *        description: returns an array of objecrs of likes belonging to a joke
+ *        schema:
+ *          $ref: '#/definitions/Like'
+ *      400:
+ *        description: returned if `Authorization` header is missing
+ *      401:
+ *        description: returned when JWT is either expired or malformed, OR if
+ *                     no joke belonging to the current user could be found with
+ *                     the given ID
+ *      500:
+ *        description: returned in the event of a server error
+ */
+
+router.get("/:id/likes", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const likes = await getLikesForAJoke(id);
+    res.status(200).json(likes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * @swagger
+ * /me/jokes/{id}/likes:
+ *  delete:
+ *    security:
+ *      - JWTKeyHeader: []
+ *    summary: Permanently delete the like by a given user for a given joke
+ *    description: Permanently delete the given like
+ *    tags: [Jokes]
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: integer
+ *        description: ID belonging to the joke with a like to delete
+ *    responses:
+ *      204:
+ *        description: returns nothing if successful
+ *      400:
+ *        description: returned if `Authorization` header is missing
+ *      401:
+ *        description: returned when JWT is either expired or malformed
+ *      500:
+ *        description: returned in the event of a server error
+ */
+
+router.delete("/:id/likes", async (req, res) => {
+  const { id } = req.params;
+  const { decodedJwt } = req;
+  const userId = decodedJwt.subject;
+  try {
+    await removeLike(userId, id);
+    res.status(204).end();
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

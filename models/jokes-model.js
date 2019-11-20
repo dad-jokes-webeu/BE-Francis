@@ -1,6 +1,5 @@
 const db = require("../database/dbConfig");
 
-
 const convertPrivateIntsToBooleans = jokes => {
   if (Array.isArray(jokes)) {
     jokes.forEach(joke => {
@@ -18,7 +17,21 @@ const convertPrivateIntsToBooleans = jokes => {
  */
 
 const findUserJokes = async userId => {
-  const jokes = await db("jokes").where({ user_id: userId });
+  const jokes = await db("jokes")
+    .join("users", "users.id", "jokes.user_id")
+    .leftJoin("avatars", "avatars.user_id", "jokes.user_id")
+    .leftJoin("likes", "likes.joke_id", "jokes.id")
+    .count("likes.joke_id as likes", "jokes.id")
+    .groupBy("jokes.id")
+    .select(
+      "jokes.id",
+      "jokes.setup",
+      "jokes.punchline",
+      "jokes.private",
+      "users.username as author"
+    )
+    .where({ "jokes.user_id": userId });
+
   return convertPrivateIntsToBooleans(jokes);
 };
 
@@ -32,11 +45,23 @@ const findUserJokes = async userId => {
  */
 
 const findJokeById = async (userId, jokeId, options = { filter: {} }) => {
-  const [joke] = await db("jokes").where({
-    user_id: userId,
-    id: jokeId,
-    ...options.filter
-  });
+  const [joke] = await db("jokes")
+    .join("users", "users.id", "jokes.user_id")
+    .leftJoin("likes", "likes.joke_id", "jokes.id")
+    .count("likes.joke_id as likes", "jokes.id")
+    .groupBy("jokes.id")
+    .select(
+      "jokes.id",
+      "jokes.setup",
+      "jokes.punchline",
+      "jokes.private",
+      "users.username as author"
+    )
+    .where({
+      "jokes.user_id": userId,
+      "jokes.id": jokeId,
+      ...options.filter
+    });
   return joke;
 };
 
@@ -52,6 +77,37 @@ const addLike = async (userId, jokeId) => {
     "id"
   );
   return id;
+};
+
+const getLikes = async () => {
+  const likes = await db("likes")
+    .join("users", "users.id", "likes.liker_id")
+    .select(
+      "likes.id",
+      "liker_id",
+      "joke_id",
+      "users.username as liker_username"
+    );
+  return likes;
+};
+
+const getLikesForAJoke = async jokeId => {
+  const likes = await db("likes")
+    .join("users", "users.id", "likes.liker_id")
+    .select(
+      "likes.id",
+      "liker_id",
+      "joke_id",
+      "users.username as liker_username"
+    )
+    .where({ joke_id: jokeId });
+  return likes;
+};
+
+const removeLike = async (userId, jokeId) => {
+  await db("likes")
+    .where({ liker_id: userId, joke_id: jokeId })
+    .delete();
 };
 
 const updateJoke = async (userId, jokeId, updates) => {
@@ -73,5 +129,8 @@ module.exports = {
   addJoke,
   updateJoke,
   deleteJoke,
-  addLike
+  addLike,
+  getLikes,
+  getLikesForAJoke,
+  removeLike
 };

@@ -71,4 +71,17 @@
  *      user_id:
  *        type: integer
  *        description: The user ID that this avatar belongs to.
+ * 
+*  Like:
+ *    type: object
+ *    properties:
+ *      id:
+ *        type: integer
+ *        description: The like ID.
+ *      joke_id:
+ *        type: integer
+ *        description: The id of this joke that this like was made for
+ *      liker_id:
+ *        type: integer
+ *        description: The ID of the user that created this like.
  */
