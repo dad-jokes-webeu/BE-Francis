@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const cron = require("node-cron");
+const randomizer = require("unique-random-array");
 const {
   getPublicJokes,
   paginateJokes
@@ -21,10 +23,6 @@ const {
  *          description: The jokes that belong to the authenticated user.
  *          items:
  *            $ref: '#/definitions/Joke'
- *      400:
- *        description: returned if `Authorization` header is missing
- *      401:
- *        description: returned when JWT is either expired or malformed
  *      500:
  *        description: returned in the event of a server error
  */
@@ -69,10 +67,6 @@ router.get("/", async (req, res) => {
  *          description: The jokes that belong to the authenticated user.
  *          items:
  *            $ref: '#/definitions/Joke'
- *      400:
- *        description: returned if `Authorization` header is missing
- *      401:
- *        description: returned when JWT is either expired or malformed
  *      500:
  *        description: returned in the event of a server error
  */
@@ -110,7 +104,6 @@ cron.schedule("* * * * *", async () => {
 });
 
 
-
 /**
  * @swagger
  * /jokes/public/theday:
@@ -139,6 +132,7 @@ router.get("/theday", async (req, res) => {
     } else {
       if (initJokeOfTheDay) res.status(200).json(initJokeOfTheDay);
       else {
+        // eslint-disable-next-line require-atomic-updates
         initJokeOfTheDay = randomizer(await getPublicJokes())();
         res.status(200).json(initJokeOfTheDay);
       }
