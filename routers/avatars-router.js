@@ -21,7 +21,7 @@ const parser = multer({ storage: storage });
 
 /**
  * @swagger
- * /avatars/me:
+ * /me/avatar:
  *  get:
  *    security:
  *      - JWTKeyHeader: []
