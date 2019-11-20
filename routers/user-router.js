@@ -5,7 +5,7 @@ const { deleteUser, updateUser } = require("../models/user-model");
 
 /**
  * @swagger
- * /users/me:
+ * /me:
  *  get:
  *    security:
  *      - JWTKeyHeader: []
@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
 
 /**
  * @swagger
- * /users/me:
+ * /me:
  *  put:
  *    security:
  *      - JWTKeyHeader: []
@@ -113,7 +113,7 @@ router.put("/", async (req, res) => {
 
 /**
  * @swagger
- * /users/me:
+ * /me:
  *  delete:
  *    security:
  *      - JWTKeyHeader: []
