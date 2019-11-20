@@ -20,6 +20,25 @@ const getPublicJokes = async () => {
   return jokes;
 };
 
+const getInitJokeOfTheDay = async () => {
+  const jokes = await db("jokes")
+    .join("users", "users.id", "jokes.user_id")
+    .leftJoin("avatars", "avatars.user_id", "jokes.user_id")
+    .leftJoin("likes", "likes.joke_id", "jokes.id")
+    .count("likes.joke_id as likes", "jokes.id")
+    .groupBy("jokes.id")
+    .select(
+      "jokes.id",
+      "jokes.setup",
+      "jokes.punchline",
+      "jokes.private",
+      "users.username as user_username",
+      "avatars.url as user_avatar"
+    )
+    .where({ private: 0 });
+  return jokes[1];
+};
+
 const paginateJokes = (jokes, results, page, endIndex, startIndex) => {
   if (endIndex < jokes.length) {
     results.next = page + 1;
@@ -36,4 +55,4 @@ const paginateJokes = (jokes, results, page, endIndex, startIndex) => {
   return results;
 };
 
-module.exports = { getPublicJokes, paginateJokes };
+module.exports = { getPublicJokes, paginateJokes, getInitJokeOfTheDay  };

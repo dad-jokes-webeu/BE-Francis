@@ -3,7 +3,7 @@ module.exports = {
         "browser": true,
         "commonjs": true,
         "es6": true,
-        "node": true
+        "node": true,
     },
     "extends": "eslint:recommended",
     "globals": {
@@ -14,5 +14,6 @@ module.exports = {
         "ecmaVersion": 2018
     },
     "rules": {
+        "atomic-updates": false
     }
 };
