@@ -102,4 +102,50 @@ router.get("/popular", async (req, res) => {
   }
 });
 
+let jokeOfTheDay;
+let initJokeOfTheDay;
+cron.schedule("* * * * *", async () => {
+  const publicJokesArray = await getPublicJokes();
+  jokeOfTheDay = randomizer(publicJokesArray)();
+});
+
+
+
+/**
+ * @swagger
+ * /jokes/public/theday:
+ *  get:
+ *    security:
+ *      - JWTKeyHeader: []
+ *    summary: Returns the joke of the day
+ *    description: Returns the joke of the day
+ *    tags: [Jokes]
+ *    responses:
+ *      200:
+ *        description: returns the joke of the day
+ *        schema:
+ *          type: array
+ *          description: The joke of the day
+ *          items:
+ *            $ref: '#/definitions/Joke'
+ *      500:
+ *        description: returned in the event of a server error
+ */
+
+router.get("/theday", async (req, res) => {
+  try {
+    if (jokeOfTheDay) {
+      res.status(200).json(jokeOfTheDay);
+    } else {
+      if (initJokeOfTheDay) res.status(200).json(initJokeOfTheDay);
+      else {
+        initJokeOfTheDay = randomizer(await getPublicJokes())();
+        res.status(200).json(initJokeOfTheDay);
+      }
+    }
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
+
 module.exports = router;
