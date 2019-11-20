@@ -64,7 +64,7 @@ router.get("/", async (req, res) => {
 
 /**
  * @swagger
- * /avatars/me:
+ * /me/avatar:
  *  post:
  *    security:
  *      - JWTKeyHeader: []
@@ -121,7 +121,7 @@ router.post("/", parser.single("image"), async (req, res) => {
 
 /**
  * @swagger
- * /avatars/me/{id}:
+ * /me/avatar/{id}:
  *  put:
  *    security:
  *      - JWTKeyHeader: []
