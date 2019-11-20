@@ -306,24 +306,21 @@ router.delete("/:id", async (req, res) => {
  *    parameters:
  *      - in: body
  *        name: joke
- *        description: The joke to create
+ *        description: The joke to create a like for
  *        schema:
  *          type: object
- *          required:
- *            - setup
- *            - punchline
  *          properties:
  *            id:
  *              type: integer
  *            joke_id:
  *              type: integer
- *            liker_id
+ *            liker_id:
  *              type: integer
  *    responses:
  *      201:
  *        description: returns the newly-created joke
  *        schema:
- *          $ref: '#/definitions/Joke'
+ *          $ref: '#/definitions/Like'
  *      400:
  *        description: returned if `Authorization` header is missing, OR if the
  *                     required properties are missing
