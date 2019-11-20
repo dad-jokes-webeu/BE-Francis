@@ -104,45 +104,45 @@ router.get("/popular", async (req, res) => {
   }
 });
 
-let jokeOfTheDay;
-let initJokeOfTheDay;
+let jokeOfTheHour;
+let initJokeOfTheHour;
 cron.schedule("* * * * *", async () => {
   const publicJokesArray = await getPublicJokes();
-  jokeOfTheDay = randomizer(publicJokesArray)();
+  jokeOfTheHour = randomizer(publicJokesArray)();
 });
-
 
 
 /**
  * @swagger
- * /jokes/public/theday:
+ * /jokes/public/thehour:
  *  get:
  *    security:
  *      - JWTKeyHeader: []
- *    summary: Returns the joke of the day
- *    description: Returns the joke of the day
+ *    summary: Returns the joke of the hour
+ *    description: Returns the joke of the hour
  *    tags: [Jokes]
  *    responses:
  *      200:
- *        description: returns the joke of the day
+ *        description: returns the joke of the hour
  *        schema:
  *          type: array
- *          description: The joke of the day
+ *          description: The joke of the hour
  *          items:
  *            $ref: '#/definitions/Joke'
  *      500:
  *        description: returned in the event of a server error
  */
 
-router.get("/theday", async (req, res) => {
+router.get("/thehour", async (req, res) => {
   try {
-    if (jokeOfTheDay) {
-      res.status(200).json(jokeOfTheDay);
+    if (jokeOfTheHour) {
+      res.status(200).json(jokeOfTheHour);
     } else {
-      if (initJokeOfTheDay) res.status(200).json(initJokeOfTheDay);
+      if (initJokeOfTheHour) res.status(200).json(initJokeOfTheHour);
       else {
-        initJokeOfTheDay = randomizer(await getPublicJokes())();
-        res.status(200).json(initJokeOfTheDay);
+        // eslint-disable-next-line require-atomic-updates
+        initJokeOfTheHour = randomizer(await getPublicJokes())();
+        res.status(200).json(initJokeOfTheHour);
       }
     }
   } catch (error) {
