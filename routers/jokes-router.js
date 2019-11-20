@@ -298,15 +298,15 @@ router.delete("/:id", async (req, res) => {
  *  post:
  *    security:
  *      - JWTKeyHeader: []
- *    summary: Creates a new joke belonging to the logged-in user
- *    description: Creates a new joke belonging to the logged-in user
+ *    summary: Creates a new like by the the logged-in user for a particular joke
+ *    description: Creates a new like by the the logged-in user for a particular joke
  *    tags: [Jokes]
  *    consumes:
  *      - application/json
  *    parameters:
  *      - in: body
  *        name: joke
- *        description: The joke to create a like for
+ *        description: The like to create a like for a given joke
  *        schema:
  *          type: object
  *          properties:
