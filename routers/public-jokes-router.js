@@ -6,7 +6,7 @@ const {
 
 /**
  * @swagger
- * /jokes/public:
+ * /public/jokes:
  *  get:
  *    security:
  *      - JWTKeyHeader: []
@@ -54,7 +54,7 @@ router.get("/", async (req, res) => {
 
 /**
  * @swagger
- * /jokes/public/popular:
+ * /public/jokes/popular:
  *  get:
  *    security:
  *      - JWTKeyHeader: []
