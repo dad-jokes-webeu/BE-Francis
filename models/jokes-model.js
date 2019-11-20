@@ -21,7 +21,7 @@ const findUserJokes = async userId => {
     .join("users", "users.id", "jokes.user_id")
     .leftJoin("avatars", "avatars.user_id", "jokes.user_id")
     .leftJoin("likes", "likes.joke_id", "jokes.id")
-    .count("likes.joke_id as likes", "jokes.id")
+    .count("likes.joke_id as likes")
     .groupBy("jokes.id", "jokes.setup", "jokes.punchline", "jokes.private","users.username")
     .select(
       "jokes.id",
