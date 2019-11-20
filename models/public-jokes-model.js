@@ -6,7 +6,7 @@ const getPublicJokes = async () => {
     .leftJoin("avatars", "avatars.user_id", "jokes.user_id")
     .leftJoin("likes", "likes.joke_id", "jokes.id")
     .count("likes.joke_id as likes", "jokes.id")
-    .groupBy("likes.id", "jokes.id")
+    .groupBy("likes.id", "users.username")
     .select(
       "jokes.id",
       "jokes.setup",
