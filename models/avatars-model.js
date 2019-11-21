@@ -10,7 +10,7 @@ async function findAvatarById(id) {
 
 async function updateAvatar(id, update) {
   await db("avatars")
-    .where({ id: id })
+    .where({ user_id: id })
     .update({ url: update });
   const user = await findAvatarById(id);
   return user;

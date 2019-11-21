@@ -159,10 +159,11 @@ router.post("/", parser.single("image"), async (req, res) => {
 
 router.put("/:id", parser.single("image"), async (req, res) => {
   const url = req.file.url;
-  const { id } = req.params;
+  const { decodedJwt } = req;
+  const user_id = decodedJwt.subject;
   if (!url) res.status(400).json({ message: `invalid request` });
   try {
-    const avatar = await updateAvatar(id, url);
+    const avatar = await updateAvatar(user_id, url);
     res.status(200).json(avatar);
   } catch (error) {
     res.status(500).json({
