@@ -98,7 +98,7 @@ router.get("/popular", async (req, res) => {
 
 let jokeOfTheHour;
 let initJokeOfTheHour;
-cron.schedule("* * * * *", async () => {
+cron.schedule("*/59 * * * *", async () => {
   const publicJokesArray = await getPublicJokes();
   jokeOfTheHour = randomizer(publicJokesArray)();
 });
