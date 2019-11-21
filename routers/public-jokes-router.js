@@ -31,8 +31,8 @@ router.get("/", async (req, res) => {
   try {
     const jokes = await getPublicJokes();
     const page = req.query.page ? parseInt(req.query.page) : 1;
-    const startIndex = (page - 1) * 5;
-    const endIndex = page * 5;
+    const startIndex = (page - 1) * 6;
+    const endIndex = page * 6;
     const results = {};
 
     const paginated_results = paginateJokes(
@@ -77,8 +77,8 @@ router.get("/popular", async (req, res) => {
       return b.likes - a.likes;
     });
     const page = req.query.page ? parseInt(req.query.page) : 1;
-    const startIndex = (page - 1) * 5;
-    const endIndex = page * 5;
+    const startIndex = (page - 1) * 6;
+    const endIndex = page * 6;
     const results = {};
 
     const paginated_results = paginateJokes(
