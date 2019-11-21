@@ -111,7 +111,6 @@ router.get("/:id", async (req, res) => {
         error: "No joke found with the given id"
       });
     }
-    joke.private = joke.private === 1 ? true : false;
     res.status(200).json(joke);
   } catch (error) {
     res.status(500).json({
