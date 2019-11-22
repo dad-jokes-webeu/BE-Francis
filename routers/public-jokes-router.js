@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const cron = require("node-cron");
+const db = require("../database/dbConfig");
 const randomizer = require("unique-random-array");
 const {
   getPublicJokes,
@@ -103,7 +104,6 @@ cron.schedule("*/59 * * * *", async () => {
   jokeOfTheHour = randomizer(publicJokesArray)();
 });
 
-
 /**
  * @swagger
  * /jokes/public/thehour:
@@ -139,6 +139,45 @@ router.get("/thehour", async (req, res) => {
     }
   } catch (error) {
     res.status(500).json(error.message);
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const joke = await db("jokes")
+      .join("users", "users.id", "jokes.user_id")
+      .leftJoin("avatars", "avatars.user_id", "jokes.user_id")
+      .leftJoin("likes", "likes.joke_id", "jokes.id")
+      .count("likes.joke_id as likes", "jokes.id")
+      .groupBy(
+        "jokes.id",
+        "jokes.setup",
+        "jokes.punchline",
+        "jokes.private",
+        "users.username",
+        "avatars.url"
+      )
+      .select(
+        "jokes.id",
+        "jokes.setup",
+        "jokes.punchline",
+        "jokes.private",
+        "users.username as user_username",
+        "avatars.url as user_avatar"
+      )
+      .where({ private: 0, "jokes.id": id });
+
+    if (!joke) {
+      return res.status(400).json({
+        error: "No joke found with the given id"
+      });
+    }
+    res.status(200).json(joke);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
   }
 });
 
